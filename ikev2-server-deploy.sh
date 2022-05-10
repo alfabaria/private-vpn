@@ -8,10 +8,23 @@ if [ $(lsb_release -i -s) != "Ubuntu" ] || [ $(lsb_release -r -s) != "18.04" ]; 
 fi
 
 export SHARED_KEY=$(uuidgen)
-export IP=$(curl -s api.ipify.org)
+export IP=$(curl -s  https://ipinfo.io/ip)
+export COUNTRY=$(curl -s  https://ipinfo.io/country | awk '{print tolower($0)}')
 export DEFAULT_INTERFACE=$(route | grep '^default' | grep -o '[^ ]*$')
 
-echo "Your shared key (PSK) is $SHARED_KEY and your IP is $IP"
+VPN_USER=$1
+VPN_PASSWORD=$2
+
+if [ -z "$VPN_USER" ] || [ -z "$VPN_PASSWORD" ]; then
+    VPN_USER="default-vpn-$COUNTRY"
+    VPN_PASSWORD="VpnPr1v@t3$COUNTRY"
+fi
+
+echo "VPN Address : $IP"
+echo "Shared key (PSK) : $SHARED_KEY"
+echo "VPN User : $VPN_USER"
+echo "VPN Password : $VPN_PASSWORD"
+echo ""
 echo -e "Press enter to continue...\n"; read
 
 apt-get update
@@ -167,18 +180,18 @@ EOF
 
 ## Create VPN credentials L2TP
 cat << EOF > /etc/ppp/chap-secrets
-local-spain l2tpd "Persipura1989" *
+$VPN_USER l2tpd "$VPN_PASSWORD" *
 EOF
 
 cat << EOF > /etc/ipsec.d/passwd
-local-spain:Persipura1989:xauth-psk
+$VPN_USER:$VPN_PASSWORD:xauth-psk
 EOF
 
 ## add secrets to /etc/ipsec.secrets
 cat << EOF > /etc/ipsec.secrets
 : PSK $SHARED_KEY
 : RSA "server-key.pem"
-local-spain %any% : EAP "Persipura1989"
+$VPN_USER %any% : EAP "$VPN_PASSWORD"
 EOF
 
 sed -i "s/server_name_or_ip/${IP}/g" /etc/ipsec.secrets
