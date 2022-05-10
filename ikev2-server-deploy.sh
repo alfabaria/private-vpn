@@ -1,3 +1,5 @@
+#!/bin/bash
+
 function bail_out {
 	echo -e "\033[31;7mThis script supports only Ubuntu 18.04. Terminating.\e[0m"
 	exit 1
