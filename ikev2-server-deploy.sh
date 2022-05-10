@@ -263,6 +263,12 @@ echo "net.ipv4.ip_no_pmtu_disc = 1" >> /etc/sysctl.conf
 
 echo ""
 echo "Looks like the script has finished successfully."
+echo ""
+echo "VPN Address : $IP"
+echo "Shared key (PSK) : $SHARED_KEY"
+echo "VPN User : $VPN_USER"
+echo "VPN Password : $VPN_PASSWORD"
+echo ""
 echo "The system will now be re-booted and your VPN server should be up and running right after that."
 echo ""
 
