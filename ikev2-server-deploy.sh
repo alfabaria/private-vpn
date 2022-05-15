@@ -46,7 +46,9 @@ sudo systemctl enable xl2tpd
 #=========== 
 # Creating a Certificate Authority
 #===========
-mkdir -p ~/pki/{cacerts,certs,private}
+mkdir -p ~/pki/cacerts
+mkdir -p ~/pki/certs
+mkdir -p ~/pki/private
 chmod 700 ~/pki
 ipsec pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/ca-key.pem
 ipsec pki --self --ca --lifetime 3650 --in ~/pki/private/ca-key.pem \
