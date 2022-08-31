@@ -16,6 +16,18 @@ sudo sh add_vpn_user.sh
 ```
 
 ### Variable
-**<YOUR_VPN_SERVER>** : Replace with your VPS ip <br/>
-**<VPN_USERNAME>** : Replace with VPN username you want (optianal you can leave it blank) <br/>
-**<VPN_PASSWORD>** : Replace with VPN password you want (optianal you can leave it blank) <br/>
+**<YOUR_VPS_SERVER>** : Replace with your VPS ip <br/>
+**<PROXY_USERNAME>** : Replace with Proxy username you want to use <br/>
+**<PROXY_USERNAME>** : Replace with Proxy password you want to use <br/>
+
+
+# proxy-server
+Automation script for installing squid proxy service on ubuntu server.
+
+## How to use
+### Install and setup new Proxy
+
+****execute below command from your local machine***
+```shell
+ssh root@<YOUR_VPS_SERVER> "sudo wget https://raw.githubusercontent.com/alfabaria/private-vpn/main/install-proxy.sh -O install-proxy.sh; sudo chmod +x install-proxy.sh; sudo sh install-proxy.sh <PROXY_USERNAME> <PROXY_PASSWORD>;"
+```
