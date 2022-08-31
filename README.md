@@ -18,7 +18,7 @@ sudo sh add_vpn_user.sh
 ### Variable
 **<YOUR_VPS_SERVER>** : Replace with your VPS ip <br/>
 **<VPN_USERNAME>** : Replace with VPN username you want to use (default leave it blank)<br/>
-**<VPN_USERNAME>** : Replace with VPN password you want to use (default leave it blank)<br/><br/>
+**<VPN_PASSWORD>** : Replace with VPN password you want to use (default leave it blank)<br/><br/>
 
 
 # proxy-server
@@ -34,4 +34,4 @@ ssh root@<YOUR_VPS_SERVER> "sudo wget https://raw.githubusercontent.com/alfabari
 ### Variable
 **<YOUR_VPS_SERVER>** : Replace with your VPS ip <br/>
 **<PROXY_USERNAME>** : Replace with Proxy username you want to use <br/>
-**<PROXY_USERNAME>** : Replace with Proxy password you want to use <br/><br/>
+**<PROXY_PASSWORD>** : Replace with Proxy password you want to use <br/><br/>
