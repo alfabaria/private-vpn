@@ -20,7 +20,8 @@ sudo sh add_vpn_user.sh
 **<PROXY_USERNAME>** : Replace with Proxy username you want to use <br/>
 **<PROXY_USERNAME>** : Replace with Proxy password you want to use <br/>
 
-
+<br/>
+<br/>
 # proxy-server
 Automation script for installing squid proxy service on ubuntu server.
 
