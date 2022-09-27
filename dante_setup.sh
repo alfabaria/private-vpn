@@ -336,6 +336,10 @@ if [[ "$OStype" = 'deb' ]]; then
 
 	exit 0
 	EOF
+	# Setting up firewall
+	iptables -I INPUT -p tcp --dport 1080 -j ACCEPT
+	netfilter-persistent save
+	netfilter-persistent reload
 	# Making sockd service executable
 	chmod +x /etc/init.d/sockd
 	# Updating rc.d
