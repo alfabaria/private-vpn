@@ -35,3 +35,17 @@ ssh root@<YOUR_VPS_SERVER> "sudo wget https://raw.githubusercontent.com/alfabari
 **<YOUR_VPS_SERVER>** : Replace with your VPS ip <br/>
 **<PROXY_USERNAME>** : Replace with Proxy username you want to use <br/>
 **<PROXY_PASSWORD>** : Replace with Proxy password you want to use <br/><br/>
+
+
+# proxy-sock5
+Automation script for installing dante proxy sock5 service on ubuntu server.
+
+## How to use
+### Install and setup new Proxy
+
+****execute below command from your local machine***
+```shell
+ssh root@<YOUR_VPS_SERVER> "sudo wget https://raw.githubusercontent.com/alfabaria/private-vpn/main/dante_setup.sh -O install-proxy.sh; sudo chmod +x dante_setup.sh; sudo dante_setup.sh;"
+```
+### Variable
+**<YOUR_VPS_SERVER>** : Replace with your VPS ip
