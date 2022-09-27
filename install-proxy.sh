@@ -13,8 +13,9 @@ IP=$(curl -s https://ipinfo.io/ip)
 /usr/bin/touch /etc/squid/blacklist.acl
 /usr/bin/wget --no-check-certificate -O /etc/squid/squid.conf https://raw.githubusercontent.com/alfabaria/private-vpn/main/squid.conf
 
-/sbin/iptables -I INPUT -p tcp --dport 3128 -j ACCEPT
-/sbin/iptables-save
+iptables -I INPUT -p tcp --dport 3128 -j ACCEPT
+netfilter-persistent save
+netfilter-persistent reload
 
 service squid restart
 update-rc.d squid defaults
