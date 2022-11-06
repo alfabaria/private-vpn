@@ -6,7 +6,7 @@ Automation script for installing vpn service on ubuntu server.
 
 ****execute below command from your local machine***
 ```shell
-ssh root@<YOUR_VPN_SERVER> "sudo su; sudo wget https://raw.githubusercontent.com/alfabaria/private-vpn/main/ikev2-server-deploy.sh -O ikev2-server-deploy.sh; wget https://raw.githubusercontent.com/alfabaria/private-vpn/main/add_vpn_user.sh -O add_vpn_user.sh; sudo chmod +x ikev2-server-deploy.sh; chmod +x add_vpn_user.sh; sudo sh ikev2-server-deploy.sh <VPN_USERNAME> <VPN_PASSWORD>;"
+ssh root@<YOUR_VPN_SERVER> "sudo -u wget https://raw.githubusercontent.com/alfabaria/private-vpn/main/ikev2-server-deploy.sh -O ikev2-server-deploy.sh; wget https://raw.githubusercontent.com/alfabaria/private-vpn/main/add_vpn_user.sh -O add_vpn_user.sh; sudo -u chmod +x ikev2-server-deploy.sh; chmod +x add_vpn_user.sh; sudo -u sh ikev2-server-deploy.sh <VPN_USERNAME> <VPN_PASSWORD>;"
 ```
 
 ### Add or update vpn user
@@ -29,7 +29,7 @@ Automation script for installing squid proxy service on ubuntu server.
 
 ****execute below command from your local machine***
 ```shell
-ssh root@<YOUR_VPS_SERVER> "sudo su; sudo wget https://raw.githubusercontent.com/alfabaria/private-vpn/main/install-proxy.sh -O install-proxy.sh; sudo chmod +x install-proxy.sh; sudo sh install-proxy.sh <PROXY_USERNAME> <PROXY_PASSWORD>;"
+ssh root@<YOUR_VPS_SERVER> "sudo -u wget https://raw.githubusercontent.com/alfabaria/private-vpn/main/install-proxy.sh -O install-proxy.sh; sudo -u chmod +x install-proxy.sh; sudo -u sh install-proxy.sh <PROXY_USERNAME> <PROXY_PASSWORD>;"
 ```
 ### Variable
 **<YOUR_VPS_SERVER>** : Replace with your VPS ip <br/>
@@ -45,7 +45,7 @@ Automation script for installing dante proxy sock5 service on ubuntu server.
 
 ****execute below command from your local machine***
 ```shell
-ssh root@<YOUR_VPS_SERVER> -t "sudo su; sudo wget https://raw.githubusercontent.com/alfabaria/private-vpn/main/dante_setup.sh -O dante_setup.sh; sudo chmod +x dante_setup.sh; sudo bash dante_setup.sh;"
+ssh root@<YOUR_VPS_SERVER> -t "sudo -u wget https://raw.githubusercontent.com/alfabaria/private-vpn/main/dante_setup.sh -O dante_setup.sh; sudo -u chmod +x dante_setup.sh; sudo -u bash dante_setup.sh;"
 ```
 ### Variable
 **<YOUR_VPS_SERVER>** : Replace with your VPS ip
