@@ -45,7 +45,7 @@ Automation script for installing dante proxy sock5 service on ubuntu server.
 
 ****execute below command from your local machine***
 ```shell
-ssh root@<YOUR_VPS_SERVER> -t "sudo apt install net-tools; sudo wget https://raw.githubusercontent.com/alfabaria/private-vpn/main/dante_setup.sh -O dante_setup.sh; sudo chmod +x dante_setup.sh; sudo bash dante_setup.sh;"
+ssh root@<YOUR_VPS_SERVER> -t "sudo apt install net-tools; sudo apt install gobjc++; sudo wget https://raw.githubusercontent.com/alfabaria/private-vpn/main/dante_setup.sh -O dante_setup.sh; sudo chmod +x dante_setup.sh; sudo bash dante_setup.sh;"
 ```
 ### Variable
 **<YOUR_VPS_SERVER>** : Replace with your VPS ip
