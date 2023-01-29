@@ -41,7 +41,7 @@ apt-get -y install strongswan libcharon-extra-plugins moreutils strongswan-pki i
 sudo systemctl start strongswan
 sudo systemctl enable strongswan
 sudo systemctl start xl2tpd
-sudo systemctl enable xl2tpd
+# sudo systemctl enable xl2tpd
 
 #=========== 
 # Creating a Certificate Authority
