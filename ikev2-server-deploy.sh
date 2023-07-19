@@ -35,7 +35,7 @@ apt-get -y dist-upgrade
 
 # skips interactive dialog for iptables-persistent installer
 export DEBIAN_FRONTEND=noninteractive
-apt-get -y install strongswan libcharon-extra-plugins moreutils strongswan-pki charon-systemd iptables-persistent xl2tpd ppp
+apt-get -y install strongswan libcharon-extra-plugins libcharon-extauth-plugins libstrongswan-extra-plugins moreutils strongswan-pki charon-systemd iptables-persistent xl2tpd ppp
 
 # set service to always run
 sudo systemctl start strongswan
@@ -58,7 +58,7 @@ ipsec pki --pub --in ~/pki/private/server-key.pem --type rsa \
     | ipsec pki --issue --lifetime 1825 \
         --cacert ~/pki/cacerts/ca-cert.pem \
         --cakey ~/pki/private/ca-key.pem \
-        --dn "CN=${IP}" --san "${IP}" \
+        --dn "CN=${IP}" --san "@${IP}" --san "${IP}" \
         --flag serverAuth --flag ikeIntermediate --outform pem \
     >  ~/pki/certs/server-cert.pem
 
