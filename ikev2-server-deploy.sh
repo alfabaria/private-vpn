@@ -5,9 +5,9 @@ bail_out() {
 	exit 1
 }
 
-if [ $(lsb_release -i -s) != "Ubuntu" ] || [ $(lsb_release -r -s) != "18.04" ] || [ $(lsb_release -r -s) != "20.04" ]; then 
-	bail_out
-fi
+#if [ $(lsb_release -i -s) != "Ubuntu" ] || [ $(lsb_release -r -s) != "20.04" ] || [ $(lsb_release -r -s) != "18.04" ]; then 
+#	bail_out
+#fi
 
 export SHARED_KEY=$(uuidgen)
 export IP=$(curl -s  https://ipinfo.io/ip)
