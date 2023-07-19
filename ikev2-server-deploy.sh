@@ -1,11 +1,11 @@
 #!/bin/bash
 
 bail_out() {
-	echo -e "\033[31;7mThis script supports only Ubuntu 18.04. Terminating.\e[0m"
+	echo -e "\033[31;7mThis script supports only Ubuntu 18.04 and 20.04 . Terminating.\e[0m"
 	exit 1
 }
 
-if [ $(lsb_release -i -s) != "Ubuntu" ] || [ $(lsb_release -r -s) != "18.04" ]; then 
+if [ $(lsb_release -i -s) != "Ubuntu" ] || [ $(lsb_release -r -s) != "18.04" ] || [ $(lsb_release -r -s) != "20.04" ]; then 
 	bail_out
 fi
 
