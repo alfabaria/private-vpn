@@ -1,14 +1,5 @@
 #!/bin/bash
 
-bail_out() {
-	echo -e "\033[31;7mThis script supports only Ubuntu 18.04 and 20.04 . Terminating.\e[0m"
-	exit 1
-}
-
-#if [ $(lsb_release -i -s) != "Ubuntu" ] || [ $(lsb_release -r -s) != "20.04" ] || [ $(lsb_release -r -s) != "18.04" ]; then 
-#	bail_out
-#fi
-
 export SHARED_KEY=$(uuidgen)
 export IP=$(curl -s  https://ipinfo.io/ip)
 export COUNTRY=$(curl -s  https://ipinfo.io/country | awk '{print tolower($0)}')
@@ -35,13 +26,11 @@ apt-get -y dist-upgrade
 
 # skips interactive dialog for iptables-persistent installer
 export DEBIAN_FRONTEND=noninteractive
-apt-get -y install strongswan libcharon-extra-plugins libcharon-extauth-plugins libstrongswan-extra-plugins moreutils strongswan-pki charon-systemd iptables-persistent xl2tpd ppp
+apt-get -y install strongswan libcharon-extra-plugins libcharon-extauth-plugins libstrongswan-extra-plugins moreutils strongswan-pki charon-systemd iptables-persistent
 
 # set service to always run
 sudo systemctl start strongswan
 sudo systemctl enable strongswan
-sudo systemctl start xl2tpd
-sudo systemctl enable xl2tpd
 
 #=========== 
 # Creating a Certificate Authority
@@ -75,27 +64,6 @@ config setup
     charondebug="ike 1, knl 1, cfg 0"
     uniqueids=no
 
-conn ikev2-vpn
-    auto=add
-    compress=no
-    type=tunnel
-    keyexchange=ikev2
-    fragmentation=yes
-    forceencaps=yes
-    ike=aes256-sha1-modp1024,aes128-sha1-modp1024,3des-sha1-modp1024,aes256-sha256-modp2048,aes128-sha256-modp2048,aes256-sha1-modp2048,aes128-sha1-modp2048
-    esp=aes256-sha256,aes256-sha1,3des-sha1,aes256-sha256-modp2048,aes128-sha256-modp2048,aes256-sha1-modp2048,aes128-sha1-modp2048
-    dpdaction=clear
-    dpddelay=300s
-    rekey=no
-    left=%any
-    leftid=%any
-    leftsubnet=0.0.0.0/0
-    right=%any
-    rightid=%any
-    rightdns=8.8.8.8,8.8.4.4
-    rightsourceip=10.10.10.0/24
-    authby=secret
-
 conn ikev2-vpn-windows
     auto=add
     compress=no
@@ -121,66 +89,10 @@ conn ikev2-vpn-windows
     eap_identity=%identity
     ike=chacha20poly1305-sha512-curve25519-prfsha512,aes256gcm16-sha384-prfsha384-ecp384,aes256-sha1-modp1024,aes128-sha1-modp1024,3des-sha1-modp1024!
     esp=chacha20poly1305-sha512,aes256gcm16-ecp384,aes256-sha256,aes256-sha1,3des-sha1!
-
-conn L2TP
-    left=%defaultroute
-    leftid=@server_name_or_ip
-    right=%any
-    encapsulation=yes
-    authby=secret
-    pfs=no
-    rekey=no
-    keyingtries=5
-    dpddelay=30
-    dpdtimeout=120
-    dpdaction=clear
-    ikev2=never
-    ike=aes256-sha1-modp1024,aes128-sha1-modp1024,3des-sha1-modp1024,aes256-sha256-modp2048,aes128-sha256-modp2048,aes256-sha1-modp2048,aes128-sha1-modp2048
-    esp=aes256-sha256,aes256-sha1,3des-sha1,aes256-sha256-modp2048,aes128-sha256-modp2048,aes256-sha1-modp2048,aes128-sha1-modp2048
-    ikelifetime=24h
-    salifetime=24h
-    sha2-truncbug=no
-    auto=add
-    leftprotoport=17/1701
-    rightprotoport=17/%any
-    type=transport
 EOF
 
 sed -i "s/@server_name_or_ip/${IP}/g" /etc/ipsec.conf
 
-
-## Create xl2tpd config 
-cat << EOF > /etc/xl2tpd/xl2tpd.conf
-[global]
-port = 1701
-
-[lns default]
-ip range = 192.168.42.10-192.168.42.250
-local ip = 192.168.42.1
-require chap = yes
-refuse pap = yes
-require authentication = yes
-name = l2tpd
-pppoptfile = /etc/ppp/options.xl2tpd
-length bit = yes
-EOF
-
-### Set xl2tpd options
-cat << EOF > /etc/ppp/options.xl2tpd
-+mschap-v2
-ipcp-accept-local
-ipcp-accept-remote
-noccp
-auth
-mtu 1280
-mru 1280
-proxyarp
-lcp-echo-failure 4
-lcp-echo-interval 30
-connect-delay 5000
-ms-dns 8.8.8.8
-ms-dns 8.8.4.4
-EOF
 
 ## Create VPN credentials L2TP
 cat << EOF > /etc/ppp/chap-secrets
@@ -199,6 +111,8 @@ $VPN_USER %any% : EAP "$VPN_PASSWORD"
 EOF
 
 sed -i "s/server_name_or_ip/${IP}/g" /etc/ipsec.secrets
+
+sudo systemctl restart strongswan-starter
 
 #=========== 
 # IPTABLES + FIREWALL
@@ -224,15 +138,10 @@ iptables -A INPUT -i lo -j ACCEPT
 iptables -A INPUT -p udp --dport  500 -j ACCEPT
 iptables -A INPUT -p udp --dport 4500 -j ACCEPT
 
-iptables -A FORWARD --match policy --pol ipsec --dir in  --proto esp -s 10.10.10.10/24 -j ACCEPT
-iptables -A FORWARD --match policy --pol ipsec --dir out --proto esp -d 10.10.10.10/24 -j ACCEPT
 iptables -A FORWARD --match policy --pol ipsec --dir in  --proto esp -s 10.10.100.0/24 -j ACCEPT
 iptables -A FORWARD --match policy --pol ipsec --dir out --proto esp -d 10.10.100.0/24 -j ACCEPT
-iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o ${DEFAULT_INTERFACE} -m policy --pol ipsec --dir out -j ACCEPT
-iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o ${DEFAULT_INTERFACE} -j MASQUERADE
 iptables -t nat -A POSTROUTING -s 10.10.100.0/24 -o ${DEFAULT_INTERFACE} -m policy --pol ipsec --dir out -j ACCEPT
 iptables -t nat -A POSTROUTING -s 10.10.100.0/24 -o ${DEFAULT_INTERFACE} -j MASQUERADE
-iptables -t mangle -A FORWARD --match policy --pol ipsec --dir in -s 10.10.10.10/24 -o ${DEFAULT_INTERFACE} -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360
 iptables -t mangle -A FORWARD --match policy --pol ipsec --dir in -s 10.10.100.0/24 -o ${DEFAULT_INTERFACE} -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360
 iptables -I INPUT -p udp --dport 1701 -m policy --dir in --pol ipsec -j ACCEPT
 iptables -I FORWARD -i ${DEFAULT_INTERFACE} -o ppp+ -m conntrack --ctstate "RELATED,ESTABLISHED" -j ACCEPT
