@@ -71,7 +71,6 @@ conn ikev2-vpn-windows
     keyexchange=ikev2
     fragmentation=yes
     forceencaps=yes
-    leftfirewall=yes
     dpdaction=clear
     dpddelay=300s
     rekey=no
