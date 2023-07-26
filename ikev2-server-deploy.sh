@@ -26,7 +26,7 @@ apt-get -y dist-upgrade
 
 # skips interactive dialog for iptables-persistent installer
 export DEBIAN_FRONTEND=noninteractive
-apt-get -y install strongswan libcharon-extra-plugins libcharon-extauth-plugins libstrongswan-extra-plugins moreutils strongswan-pki charon-systemd iptables-persistent
+apt-get -y install strongswan libcharon-extra-plugins libcharon-extauth-plugins libstrongswan-extra-plugins moreutils strongswan-pki charon-systemd iptables-persistent libtss2-tcti-tabrmd0
 
 # set service to always run
 sudo systemctl start strongswan
