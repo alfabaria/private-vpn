@@ -162,11 +162,14 @@ netfilter-persistent reload
 # CHANGES TO SYSCTL (/etc/sysctl.conf)
 #=======
 
-sed -i "s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/" /etc/sysctl.conf
-sed -i "s/#net.ipv4.conf.all.accept_redirects = 0/net.ipv4.conf.all.accept_redirects = 0/" /etc/sysctl.conf
-sed -i "s/#net.ipv4.conf.all.send_redirects = 0/net.ipv4.conf.all.send_redirects = 0/" /etc/sysctl.conf
+# sed -i "s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/" /etc/sysctl.conf
+# sed -i "s/#net.ipv4.conf.all.accept_redirects = 0/net.ipv4.conf.all.accept_redirects = 0/" /etc/sysctl.conf
+# sed -i "s/#net.ipv4.conf.all.send_redirects = 0/net.ipv4.conf.all.send_redirects = 0/" /etc/sysctl.conf
 echo "" >> /etc/sysctl.conf
-echo "" >> /etc/sysctl.conf
+echo "## SETTING FOR IPSEC VPN ENABLE FORWARDING NETWORK ##" >> /etc/sysctl.conf
+echo "net.ipv4.ip_forward=1/net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+echo "net.ipv4.conf.all.accept_redirects = 0" >> /etc/sysctl.conf
+echo "net.ipv4.conf.all.send_redirects = 0" >> /etc/sysctl.conf
 echo "net.ipv4.ip_no_pmtu_disc = 1" >> /etc/sysctl.conf
 
 #=======
