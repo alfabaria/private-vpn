@@ -1,8 +1,8 @@
 #!/bin/bash
 
 export SHARED_KEY=$(uuidgen)
-export IP=$(curl -s  https://ipinfo.io/ip)
-export COUNTRY=$(curl -s  https://ipinfo.io/country | awk '{print tolower($0)}')
+export IP=$(curl -s ifconfig.co)
+export COUNTRY=$(curl -s ifconfig.co/country)
 export DEFAULT_INTERFACE=$(route | grep '^default' | grep -o '[^ ]*$')
 
 VPN_USER=$1
