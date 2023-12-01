@@ -2,7 +2,7 @@
 
 SQUID_USER=$1
 SQUID_PASSWORD=$2
-IP=$(curl -s https://ipinfo.io/ip)
+IP=$(curl -s ifconfig.co)
 
 /usr/bin/apt update
 /usr/bin/apt -y install squid apache2-utils
